@@ -15,7 +15,7 @@ file(GLOB_RECURSE USER_HEADER CONFIGURE_DEPENDS "$${CMAKE_CURENT_SOURCE_DIR}/inc
 
 
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libbs/SDL/CMakeLists.txt")
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libbs/SDL3/CMakeLists.txt" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libbs/SDL3_image/CMakeLists.txt")
     find_package(Git REQUIRED)
     message(STATUS "Initializing git submodules...")
     execute_process(
@@ -23,12 +23,12 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libbs/SDL/CMakeLists.txt")
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif()
-add_subdirectory("libbs/SDL")
-
+add_subdirectory("libbs/SDL3")
+add_subdirectory("libbs/SDL3_image")
 
 
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURENT_SOURCE_DIR}/include/")
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL3)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL3 SDL3_image)
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
