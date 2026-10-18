@@ -8,8 +8,7 @@
   "adapter": "CodeLLDB",
   "request": "launch",
   "build": {
-    "command": "cmake",
-    "args": ["--build", "--preset", "debug"],
+    "command": "cmake --preset debug && cmake --build --preset debug",
     "cwd": "$ZED_WORKTREE_ROOT"
   },
   "program": "$ZED_WORKTREE_ROOT/build/debug/Breakout",
