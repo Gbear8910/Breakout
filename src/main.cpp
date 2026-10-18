@@ -6,6 +6,7 @@
 #include <SDL3/SDL_properties.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+
 struct SDLStats {
   SDL_Window *window;
   SDL_Renderer *renderer;
@@ -24,7 +25,7 @@ int main(int argc, char **argv) {
   SDLStats state;
   int width = 800;
   int hight = 600;
-  state.window = SDL_CreateWindow("Breakout", width, hight, 0);
+  state.window = SDL_CreateWindow("Breakout Game", width, hight, 0);
   if (!state.window) {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error",
                              "Failed to make Window", nullptr);
@@ -51,7 +52,7 @@ int main(int argc, char **argv) {
       }
     }
     // render to screen
-    SDL_SetRenderDrawColor(state.renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(state.renderer, 255, 255, 0, 255);
     SDL_RenderClear(state.renderer);
 
     SDL_RenderPresent(state.renderer);
