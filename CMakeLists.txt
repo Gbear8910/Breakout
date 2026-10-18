@@ -8,10 +8,26 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project("Breakout")
+
+
 file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "$${CMAKE_CURENT_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE USER_HEADER CONFIGURE_DEPENDS "$${CMAKE_CURENT_SOURCE_DIR}/include/*.h")
-#add_subdirectory("libbs/SDL")
-find_package()
+
+
+add_subdirectory("libbs/SDL")
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/SDL/CMakeLists.txt")
+    find_package(Git REQUIRED)
+    message(STATUS "Initializing git submodules...")
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE result
+    )
+    if(NOT result EQUAL 0)
+        message(FATAL_ERROR "Could not initialize submodules. Run: git submodule update --init --recursive")
+    endif()
+endif()
+
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURENT_SOURCE_DIR}/include/")
