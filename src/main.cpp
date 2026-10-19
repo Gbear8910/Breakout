@@ -9,10 +9,6 @@
 #include <SDL3/SDL_properties.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
-#include <SDL3_image/SDL_image.h>
-#include <cwchar>
-#include <initializer_list>
-#include <string>
 
 struct SDLStats {
   SDL_Window *window;
@@ -26,8 +22,20 @@ void Cleanup(SDLStats &stats);
 int main(int argc, char **argv) {
   // intitalize game
   SDLStats state;
-  if (!initlize(state)) {
-    return -1;
+  int width = 800;
+  int hight = 600;
+  state.window = SDL_CreateWindow("Breakout Game", width, hight, 0);
+  if (!state.window) {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error",
+                             "Failed to make Window", nullptr);
+    Cleanup(state);
+  }
+  // create the renderer
+  state.renderer = SDL_CreateRenderer(state.window, nullptr);
+  if (!state.renderer) {
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error",
+                             "Failed to make Renderer", nullptr);
+    Cleanup(state);
   }
   // game data
   const bool *keys = SDL_GetKeyboardState(nullptr);
@@ -88,7 +96,7 @@ int main(int argc, char **argv) {
                              .w = spriteSize,
                              .h = spriteSize};
     // render to screen
-    SDL_SetRenderDrawColor(state.renderer, 50, 100, 75, 255);
+    SDL_SetRenderDrawColor(state.renderer, 255, 255, 0, 255);
     SDL_RenderClear(state.renderer);
 
     SDL_RenderTexture(state.renderer, paddle, &paddleSize, &paddleLocation);
