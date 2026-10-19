@@ -10,9 +10,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project("Breakout")
 
 
-file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "$${CMAKE_CURENT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE USER_HEADER CONFIGURE_DEPENDS "$${CMAKE_CURENT_SOURCE_DIR}/include/*.h")
-
+file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "$${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE USER_HEADER CONFIGURE_DEPENDS "$${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 
 
 if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libbs/SDL3/CMakeLists.txt" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libbs/SDL3_image/CMakeLists.txt")
@@ -27,8 +26,13 @@ add_subdirectory("libbs/SDL3")
 add_subdirectory("libbs/SDL3_image")
 
 
-
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURENT_SOURCE_DIR}/include/")
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+
+add_custom_target(copy_data ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/data"
+        "${CMAKE_CURRENT_BINARY_DIR}/data"
+)
